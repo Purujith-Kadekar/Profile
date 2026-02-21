@@ -16,8 +16,8 @@
     
     --font-heading: 'Instrument Sans', sans-serif;
     --font-body: 'Instrument Sans', sans-serif;
-    /* --transition: all 0.3s ease;
-    --header-offset: -100px; */
+    --transition: all 0.3s ease;
+    --header-offset: -80px;
 }
 
 * {
@@ -63,11 +63,17 @@ header {
 
 nav {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end; /* Changed to allow burger on right when logo is missing */
     align-items: center;
     width: 90%;
     max-width: 1080px;
     margin: auto;
+}
+
+@media screen and (min-width: 769px) {
+    nav {
+        justify-content: center; /* Center links on desktop */
+    }
 }
 
 .logo {
@@ -721,32 +727,61 @@ footer p {
 /* Responsive */
 @media screen and (max-width: 768px) {
     .nav-links {
-        position: absolute;
+        position: fixed;
         right: 0px;
-        height: 92vh;
-        top: 8vh;
+        height: 100vh;
+        top: 0;
         background-color: var(--bg-darkest);
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 70%;
+        justify-content: center;
+        width: 100%;
         transform: translateX(100%);
-        transition: transform 0.5s ease-in;
-        border-left: 1px solid #333;
-        padding-top: 2rem;
-        gap: 1.5rem;
+        transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+        z-index: 1000;
+        padding-top: 0;
+        gap: 2rem;
     }
 
     .nav-links li {
         opacity: 0;
+        margin: 0;
+    }
+
+    .nav-links li a {
+        font-size: 1.5rem; /* Much larger for mobile */
+        letter-spacing: 0.2em;
+        padding: 1.5rem 2rem;
+        color: var(--text-white); /* Use brighter white for mobile */
+        width: 100%;
+        text-align: center;
+        display: block;
+    }
+
+    .nav-links li a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--accent);
     }
 
     .burger {
         display: block;
+        z-index: 1001; /* Stay above nav-links when open */
     }
 
     .nav-active {
         transform: translateX(0%);
+    }
+
+    @keyframes navLinkFade {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0px);
+        }
     }
 
     .content-split, .content-split.reverse {
@@ -773,8 +808,38 @@ footer p {
         grid-template-columns: 1fr;
     }
     
+    /* Performance Highlights Optimization */
+    .timeline {
+        column-count: 1;
+        column-gap: 0;
+    }
+
+    .timeline-item {
+        padding: 1.2rem 0 1.2rem 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 2px solid var(--accent);
+    }
+
     .location {
-        display: none;
+        display: block; /* Restored visibility */
+        font-size: 0.75rem;
+        opacity: 0.8;
+        margin-top: 0.4rem;
+    }
+
+    .year {
+        font-size: 0.7rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .timeline-item h4 {
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+
+    /* Certificate Cards Optimization */
+    .cert-card {
+        flex: 0 0 280px; /* Slightly narrower for mobile */
     }
 
     .certificate-item {
